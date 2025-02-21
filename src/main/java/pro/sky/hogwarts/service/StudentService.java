@@ -1,6 +1,7 @@
 package pro.sky.hogwarts.service;
 
 import org.springframework.stereotype.Service;
+import pro.sky.hogwarts.model.Faculty;
 import pro.sky.hogwarts.model.Student;
 import pro.sky.hogwarts.repository.StudentRepository;
 
@@ -17,11 +18,21 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    public Collection<Student> getStudentsByAgeBetween(int min, int max){
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
 
     public Student add(Student student) {
         return studentRepository.save(student);
     }
 
+    public Faculty getStudentFaculty(long id) {
+        if (studentRepository.findById(id).isPresent()) {
+            return studentRepository.findById(id).get().getFaculty();
+        }
+        return null;
+    }
 
     public Student get(Long id) {
         return studentRepository.findById(id ).orElse(null);

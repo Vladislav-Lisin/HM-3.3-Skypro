@@ -1,8 +1,10 @@
 package pro.sky.hogwarts.controller;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.hogwarts.model.Faculty;
+import pro.sky.hogwarts.model.Student;
 import pro.sky.hogwarts.service.FacultyService;
 
 import java.util.Collection;
@@ -37,8 +39,24 @@ public class FacultyController {
         return facultyService.deleteFaculty(id);
     }
 
-    @GetMapping("/filter/{color}")
-    public Collection<Faculty> filterByColor(@PathVariable String color) {
+    @GetMapping("/color/{color}")
+    public ResponseEntity<Collection<Faculty>> filterByColor(@PathVariable String color) {
         return facultyService.getByColor(color);
+    }
+
+    @GetMapping("/colorOrName/{colorOrName}")
+    public ResponseEntity<Collection<Faculty>> filterByColorOrName(@PathVariable String colorOrName) {
+        return facultyService.getByColorOrName(colorOrName);
+    }
+
+
+
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> getStudentsByFaculty(@PathVariable long id) {
+        Collection<Student> result = facultyService.getFacultyStudents(id);
+        if (result.isEmpty()) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 }
