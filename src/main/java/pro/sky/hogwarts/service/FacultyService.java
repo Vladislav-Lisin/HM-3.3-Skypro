@@ -56,6 +56,7 @@ public class FacultyService {
         return ResponseEntity.ok(result);
     }
 
+
     public Collection<Student> getFacultyStudents(long id) {
         return studentRepository.findAllByFaculty_id(id);
     }
