@@ -107,9 +107,7 @@ public class StudentService {
         logger.info("Был использован метод getSum");
         return Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
-                .reduce(0, (a, b) -> a + b);
-
-
+                .reduce(0, Integer::sum);
     }
 
 }
