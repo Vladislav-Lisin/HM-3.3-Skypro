@@ -83,4 +83,18 @@ public class StudentController {
     public Collection<Student> getLast5Students() {
         return studentService.getLast5Student();
     }
+
+    @GetMapping("/list/letter/a")
+    public Collection<Student> findByNameIsStartingWithA() {
+        return studentService.findByNameIsStartingWithA();
+    }
+    @GetMapping("/average-age")
+    public double getAverageAgeByStream() {
+        return studentService.getAverageAge();
+    }
+    @GetMapping("/summary")
+    public int getSummary() {
+        return studentService.getSum();
+    }
+
 }

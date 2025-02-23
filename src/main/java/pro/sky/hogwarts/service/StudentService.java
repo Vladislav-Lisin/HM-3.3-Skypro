@@ -11,6 +11,7 @@ import pro.sky.hogwarts.repository.StudentRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -23,7 +24,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Collection<Student> getStudentsByAgeBetween(int min, int max){
+    public Collection<Student> getStudentsByAgeBetween(int min, int max) {
         logger.info("Был использован метод getStudentsByAgeBetween");
         return studentRepository.findByAgeBetween(min, max);
     }
@@ -44,7 +45,7 @@ public class StudentService {
 
     public Student get(Long id) {
         logger.info("Был использован метод get");
-        return studentRepository.findById(id ).orElse(null);
+        return studentRepository.findById(id).orElse(null);
     }
 
 
@@ -87,4 +88,28 @@ public class StudentService {
         logger.info("Был использован метод getLast5Student");
         return studentRepository.getLast5Students();
     }
+
+    public Collection<Student> findByNameIsStartingWithA() {
+        logger.info("Был использован метод findByNameIsStartingWithA");
+        return studentRepository.findAll().stream()
+                .filter(student -> student.getName()
+                        .startsWith("A"))
+                .toList();
+    }
+
+
+    public double getAverageAge() {
+        logger.info("Был использован метод getAverageAge");
+        return studentRepository.findAll().stream().mapToInt(Student::getAge).average().getAsDouble();
+    }
+
+    public int getSum() {
+        logger.info("Был использован метод getSum");
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+
+
+    }
+
 }

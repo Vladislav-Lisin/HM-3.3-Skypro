@@ -10,6 +10,7 @@ import pro.sky.hogwarts.repository.FacultyRepository;
 import pro.sky.hogwarts.repository.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 
 @Service
@@ -69,5 +70,13 @@ public class FacultyService {
     public Collection<Student> getFacultyStudents(long id) {
         logger.info("Был использован метод getFacultyStudents");
         return studentRepository.findAllByFaculty_id(id);
+    }
+
+    public String longestName() {
+        logger.info("Был использован метод longestName");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length))
+                .get();
     }
 }
