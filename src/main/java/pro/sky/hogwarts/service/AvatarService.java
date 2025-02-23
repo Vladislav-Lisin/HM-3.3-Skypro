@@ -26,6 +26,7 @@ public class AvatarService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
+
     Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     public AvatarService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
@@ -35,6 +36,7 @@ public class AvatarService {
 
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Был использован метод uploadAvatar");
         Student student = studentRepository.getById(studentId);
         Path filePath = Path.of(avatarDir, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -54,13 +56,16 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
     public Avatar findAvatar(Long studentId) {
+        logger.info("Был использован метод findAvatar");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());}
 
     private String getExtensions(String fileName) {
+        logger.info("Был использован метод getExtensions");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     public Collection<String> getAvatarList(int pageNumber, int pageSize){
+        logger.info("Был использован метод getAvatarList");
         PageRequest pageRequest = PageRequest.of(pageNumber-1,pageSize);
         return avatarRepository.findAll(pageRequest).stream()
                 .map(Avatar ::getFilePath)

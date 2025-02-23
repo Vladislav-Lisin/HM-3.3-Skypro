@@ -32,7 +32,7 @@ public class StudentController {
     }
 
     @GetMapping("/age")
-    public ResponseEntity<Collection<Student>> findByAgeBetween(@RequestParam int min, @RequestParam int max){
+    public ResponseEntity<Collection<Student>> findByAgeBetween(@RequestParam int min, @RequestParam int max) {
         Collection<Student> result = studentService.getStudentsByAgeBetween(min, max);
         if (result.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -67,5 +67,20 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundFaculty);
+    }
+
+    @GetMapping("/count")
+    public int getStudentCount() {
+        return studentService.getStudentCount();
+    }
+
+    @GetMapping("/avg-age")
+    public int getStudentAvgAge() {
+        return studentService.getStudentAvgAge();
+    }
+
+    @GetMapping("/last5")
+    public Collection<Student> getLast5Students() {
+        return studentService.getLast5Student();
     }
 }
