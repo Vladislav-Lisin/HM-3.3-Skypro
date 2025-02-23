@@ -1,5 +1,6 @@
 package pro.sky.hogwarts.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pro.sky.hogwarts.model.Faculty;
 import pro.sky.hogwarts.model.Student;
@@ -40,17 +41,36 @@ public class StudentService {
 
 
     public Student update(Long id, Student student) {
-        return studentRepository .save(student);
+        student.setId(id);
+        return studentRepository.save(student);
     }
 
 
-    public void delete(Long id) {
-        studentRepository.deleteById(id);    }
+    public ResponseEntity<Void> deleteStudent(long id) {
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     public List<Student> getByAge(int age) {
         return studentRepository.findAll()
                 .stream()
                 .filter(it -> it.getAge() == age)
                 .collect(Collectors.toList());
+    }
+
+    public int getStudentCount() {
+        return studentRepository.getStudentCount();
+    }
+
+    public int getStudentAvgAge() {
+        return studentRepository.getStudentAvgAge();
+    }
+
+    public Collection<Student> getLast5Student() {
+        return studentRepository.getLast5Students();
     }
 }
