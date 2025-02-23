@@ -18,6 +18,7 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private static final Object flag = new Object();
 
     public StudentService(StudentRepository studentRepository) {
         logger.info("Был использован метод StudentService");
@@ -110,4 +111,48 @@ public class StudentService {
                 .reduce(0, Integer::sum);
     }
 
+    public void studentThread() {
+        logger.info("Был использован метод studentThread");
+        List<Student> studentList = studentRepository.findAll();
+        System.out.println("************************");
+
+        System.out.println(studentList.get(0));
+        System.out.println(studentList.get(1));
+
+        new Thread(() -> {
+            System.out.println(studentList.get(2));
+            System.out.println(studentList.get(3));
+        }).start();
+        new Thread(() -> {
+            System.out.println(studentList.get(4));
+            System.out.println(studentList.get(5));
+        }).start();
+    }
+
+
+    public void synchronizedStudentThread() throws InterruptedException {
+        logger.info("Был использован метод synchronizedStudentThread");
+        List<Student> studentList = studentRepository.findAll();
+        printStudent(studentList.get(0));
+        printStudent(studentList.get(1));
+
+        var t1 = new Thread(() -> {
+            printStudent(studentList.get(2));
+            printStudent(studentList.get(3));
+        });
+        var t2 = new Thread(() -> {
+            printStudent(studentList.get(4));
+            printStudent(studentList.get(5));
+        });
+        t1.start();
+        t1.join();
+        t2.start();
+        t2.join();
+    }
+
+    private static void printStudent(Student student){
+        synchronized (flag) {
+            System.out.println(student);
+        }
+    }
 }

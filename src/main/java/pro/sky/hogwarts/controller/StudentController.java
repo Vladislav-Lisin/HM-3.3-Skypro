@@ -97,4 +97,14 @@ public class StudentController {
         return studentService.getSum();
     }
 
+    @GetMapping("/print-parallel")
+    public void studentThread() {
+        studentService.studentThread();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void synchronizedStudentThread() throws InterruptedException {
+        studentService.synchronizedStudentThread();
+    }
+
 }
