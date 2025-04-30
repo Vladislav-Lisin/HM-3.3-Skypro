@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import pro.sky.hogwarts.model.Student;
 
 import java.util.Collection;
-import java.util.List;
 
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
