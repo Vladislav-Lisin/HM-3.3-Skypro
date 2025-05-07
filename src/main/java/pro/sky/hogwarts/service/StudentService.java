@@ -155,4 +155,53 @@ public class StudentService {
             System.out.println(student);
         }
     }
+
+
+    public List<Student> getAllStudents() {
+        logger.info("Был использован метод getAllStudents");
+        return studentRepository.findAll();
+    }
+
+
+    public void printStudentsSynchronized() {
+        logger.info("Был использован метод printStudentsSynchronized");
+        List<Student> students = getAllStudents();
+
+        Thread thread1 = new Thread(() -> {
+            printStudent(students.get(0));
+            printStudent(students.get(1));
+        });
+
+        Thread thread2 = new Thread(() -> {
+            printStudent(students.get(2));
+            printStudent(students.get(3));
+        });
+
+        thread1.start();
+        thread2.start();
+
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error("Thread was interrupted", e);
+        }
+    }
+
+
+    public void printStudentsParallel() {
+        logger.info("Был использован метод printStudentsParallel");
+        List<Student> students = getAllStudents();
+
+        new Thread(() -> {
+            System.out.println(students.get(0));
+            System.out.println(students.get(1));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(2));
+            System.out.println(students.get(3));
+        }).start();
+    }
 }
